@@ -7,7 +7,9 @@ import java.util.Properties;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -20,14 +22,14 @@ public class BaseTest {
 	public static FileReader fr;
 	public static FileReader frLoc;
 
-	@BeforeTest
+	@BeforeMethod
 	public void setUp() throws IOException {
 
 		if (driver == null) {
 			fr = new FileReader(
-					"C:\\Users\\Abhishek\\eclipse-workspace\\TestAutomationProject\\src\\test\\resources\\configFiles\\config.properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\configFiles\\config.properties");
 			frLoc = new FileReader(
-					"C:\\Users\\Abhishek\\eclipse-workspace\\TestAutomationProject\\src\\test\\resources\\configFiles\\locators.properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\configFiles\\locators.properties");
 			prop.load(fr);
 			loc.load(frLoc);
 		}
@@ -44,10 +46,11 @@ public class BaseTest {
 			driver = new EdgeDriver(); // move to base
 			driver.get(prop.getProperty("url"));
 		}
+		driver.manage().window().maximize();
 
 	}
 
-	@AfterTest
+	@AfterMethod
 	public void tearDown() {
 
 		driver.close();
